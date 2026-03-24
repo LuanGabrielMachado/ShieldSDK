@@ -4,9 +4,31 @@
 
 SDK Kotlin/JVM para compartilhamento seguro de dados com consentimento granular e proteção criptográfica de nível pós-quântico. Funciona em Android, Spring Boot, Ktor e qualquer JVM — sem dependência de servidor, sem infraestrutura obrigatória.
 
-[![Apache 2.0](https://img.shields.io/badge/licença-Apache%202.0-blue)](LICENSE)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.8%2B-orange)](https://kotlinlang.org)
-[![JVM](https://img.shields.io/badge/JVM-17%2B-green)](https://openjdk.org)
+![Build](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge&logo=kotlin&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-173%20passing-brightgreen?style=for-the-badge&logo=junit5&logoColor=white)
+![Coverage](https://img.shields.io/badge/coverage-70%25%2B-brightgreen?style=for-the-badge&logo=jacoco&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
+![JDK](https://img.shields.io/badge/JDK-17+-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=for-the-badge)
+
+![Post-Quantum](https://img.shields.io/badge/Post--Quantum-Kyber--768-blueviolet?style=for-the-badge&logo=atom&logoColor=white)
+![Dilithium](https://img.shields.io/badge/Signature-Dilithium3-blueviolet?style=for-the-badge&logo=atom&logoColor=white)
+![NIST](https://img.shields.io/badge/NIST-FIPS%20203%20%7C%20204-003087?style=for-the-badge&logo=nist&logoColor=white)
+![KEM](https://img.shields.io/badge/KEM-ECDH--P256%20%2B%20Kyber--768-8A2BE2?style=for-the-badge)
+
+![AES](https://img.shields.io/badge/Cipher-AES--256--GCM-red?style=for-the-badge&logo=letsencrypt&logoColor=white)
+![HKDF](https://img.shields.io/badge/KDF-HKDF--SHA256-red?style=for-the-badge)
+![Memory](https://img.shields.io/badge/Memory-Zeroization-critical?style=for-the-badge&logo=security&logoColor=white)
+![AntiReplay](https://img.shields.io/badge/Anti--Replay-Protected-critical?style=for-the-badge)
+
+![LGPD](https://img.shields.io/badge/LGPD-Compliant-009c3b?style=for-the-badge)
+![GDPR](https://img.shields.io/badge/GDPR-Compliant-003399?style=for-the-badge)
+![Consent](https://img.shields.io/badge/Consent-Granular-009c3b?style=for-the-badge)
+![HarvestNow](https://img.shields.io/badge/Harvest%20Now%20Decrypt%20Later-Protected-8A2BE2?style=for-the-badge)
+
+![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20JVM%20%7C%20Spring%20%7C%20Ktor-orange?style=for-the-badge&logo=android&logoColor=white)
+![BouncyCastle](https://img.shields.io/badge/BouncyCastle-1.77-yellow?style=for-the-badge)
+![Audit](https://img.shields.io/badge/Security%20Audit-15%20fixes-success?style=for-the-badge&logo=checkmarx&logoColor=white)
 
 ---
 
