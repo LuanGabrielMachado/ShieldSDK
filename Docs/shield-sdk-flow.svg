@@ -1,0 +1,195 @@
+<svg viewBox="0 0 1000 740" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',system-ui,sans-serif">
+
+  <!-- BG -->
+  <rect width="1000" height="740" fill="#0d1117" rx="12"/>
+
+  <!-- TITLE -->
+  <text x="500" y="36" text-anchor="middle" fill="#f0f6fc" font-size="19" font-weight="700">Shield SDK — Hybrid PQ Protocol</text>
+  <text x="500" y="56" text-anchor="middle" fill="#8b949e" font-size="11">ECDH-P256 + Kyber-768  →  HKDF-SHA256  →  AES-256-GCM</text>
+
+  <!-- ══════════════════════════════════════════════════
+       TOP: EMISSOR (left) and RECEPTOR (right)
+       ══════════════════════════════════════════════════ -->
+
+  <!-- EMISSOR -->
+  <rect x="30" y="72" width="220" height="44" rx="8" fill="#1f6feb"/>
+  <text x="140" y="90" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">📱 EMISSOR</text>
+  <text x="140" y="107" text-anchor="middle" fill="#cae8ff" font-size="10">userData + ShareSelection</text>
+
+  <!-- RECEPTOR -->
+  <rect x="750" y="72" width="220" height="44" rx="8" fill="#238636"/>
+  <text x="860" y="90" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">🏛️ RECEPTOR</text>
+  <text x="860" y="107" text-anchor="middle" fill="#c8e6c9" font-size="10">HybridRecipientKeyPair</text>
+
+  <!-- ══════════════════════════════════════════════════
+       ROW 1 BOXES
+       ══════════════════════════════════════════════════ -->
+
+  <!-- BOX 1: KEY GENERATION (receptor side) -->
+  <rect x="750" y="140" width="220" height="88" rx="8" fill="#161b22" stroke="#238636" stroke-width="1.5"/>
+  <text x="860" y="160" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="700">① KEY GENERATION</text>
+  <text x="860" y="178" text-anchor="middle" fill="#8b949e" font-size="10">EC P-256 KeyPair (Keystore)</text>
+  <text x="860" y="194" text-anchor="middle" fill="#8b949e" font-size="10">Kyber-768 KeyPair (BCPQC)</text>
+  <text x="860" y="212" text-anchor="middle" fill="#8b949e" font-size="10">→ HybridRecipientPublicKey</text>
+  <line x1="860" y1="116" x2="860" y2="140" stroke="#3fb950" stroke-width="1.5"/>
+  <polygon points="855,138 860,148 865,138" fill="#3fb950"/>
+
+  <!-- BOX 2: ECDH (emissor side) -->
+  <rect x="30" y="140" width="220" height="88" rx="8" fill="#161b22" stroke="#1f6feb" stroke-width="1.5"/>
+  <text x="140" y="160" text-anchor="middle" fill="#58a6ff" font-size="10" font-weight="700">② ECDH EFÊMERO</text>
+  <text x="140" y="178" text-anchor="middle" fill="#8b949e" font-size="10">gera EC KeyPair efêmero</text>
+  <text x="140" y="194" text-anchor="middle" fill="#8b949e" font-size="10">ECDH(ephPriv, recipientEcPub)</text>
+  <text x="140" y="212" text-anchor="middle" fill="#8b949e" font-size="10">→ ecSecret: 32 bytes</text>
+  <line x1="140" y1="116" x2="140" y2="140" stroke="#58a6ff" stroke-width="1.5"/>
+  <polygon points="135,138 140,148 145,138" fill="#58a6ff"/>
+
+  <!-- BOX 3: KYBER KEM (emissor side) -->
+  <rect x="30" y="252" width="220" height="88" rx="8" fill="#161b22" stroke="#8957e5" stroke-width="1.5"/>
+  <text x="140" y="272" text-anchor="middle" fill="#bc8cff" font-size="10" font-weight="700">③ KYBER-768 KEM</text>
+  <text x="140" y="290" text-anchor="middle" fill="#8b949e" font-size="10">encapsulate(recipientKyberPub)</text>
+  <text x="140" y="306" text-anchor="middle" fill="#8b949e" font-size="10">→ kyberSecret: 32 bytes</text>
+  <text x="140" y="322" text-anchor="middle" fill="#8b949e" font-size="10">→ ciphertext: 1088 bytes</text>
+  <line x1="140" y1="228" x2="140" y2="252" stroke="#8957e5" stroke-width="1.5"/>
+  <polygon points="135,250 140,260 145,250" fill="#8957e5"/>
+
+  <!-- ══════════════════════════════════════════════════
+       CENTER: HKDF
+       ══════════════════════════════════════════════════ -->
+
+  <!-- BOX 4: HKDF -->
+  <rect x="390" y="196" width="220" height="104" rx="8" fill="#1e1529" stroke="#d29922" stroke-width="2"/>
+  <text x="500" y="218" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="700">④ HKDF-SHA256</text>
+  <text x="500" y="238" text-anchor="middle" fill="#8b949e" font-size="10">ikm = ecSecret ‖ kyberSecret</text>
+  <text x="500" y="256" text-anchor="middle" fill="#8b949e" font-size="10">salt = requestId  (binding único)</text>
+  <text x="500" y="274" text-anchor="middle" fill="#8b949e" font-size="10">info = "shield-hybrid-pq-v1"</text>
+  <text x="500" y="292" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="600">→ sessionKey: 32 bytes 🔑</text>
+
+  <!-- BOX2 → HKDF -->
+  <line x1="250" y1="184" x2="390" y2="240" stroke="#d29922" stroke-width="1.5"/>
+  <polygon points="384,237 394,243 388,252" fill="#d29922"/>
+
+  <!-- BOX3 → HKDF -->
+  <line x1="250" y1="310" x2="390" y2="278" stroke="#d29922" stroke-width="1.5"/>
+  <polygon points="384,270 394,277 386,283" fill="#d29922"/>
+
+  <!-- ══════════════════════════════════════════════════
+       AES + SIGN
+       ══════════════════════════════════════════════════ -->
+
+  <!-- BOX 5: AES-256-GCM -->
+  <rect x="390" y="324" width="220" height="84" rx="8" fill="#161b22" stroke="#da3633" stroke-width="1.5"/>
+  <text x="500" y="344" text-anchor="middle" fill="#ff7b72" font-size="10" font-weight="700">⑤ AES-256-GCM ENCRYPT</text>
+  <text x="500" y="362" text-anchor="middle" fill="#8b949e" font-size="10">encrypt(payload, sessionKey, aad)</text>
+  <text x="500" y="378" text-anchor="middle" fill="#8b949e" font-size="10">aad = len ‖ requestId ‖ recipientId</text>
+  <text x="500" y="396" text-anchor="middle" fill="#8b949e" font-size="10">iv: 12 B   auth tag: 16 B</text>
+  <line x1="500" y1="300" x2="500" y2="324" stroke="#ff7b72" stroke-width="1.5"/>
+  <polygon points="495,322 500,332 505,322" fill="#ff7b72"/>
+
+  <!-- BOX 6: SIGN -->
+  <rect x="30" y="364" width="220" height="72" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="140" y="384" text-anchor="middle" fill="#58a6ff" font-size="10" font-weight="700">⑥ ECDSA / DILITHIUM3</text>
+  <text x="140" y="402" text-anchor="middle" fill="#8b949e" font-size="10">sign(ciphertext ‖ metadata)</text>
+  <text x="140" y="420" text-anchor="middle" fill="#8b949e" font-size="10">signerPublicKey no envelope</text>
+  <line x1="140" y1="340" x2="140" y2="364" stroke="#58a6ff" stroke-width="1.5"/>
+  <polygon points="135,362 140,372 145,362" fill="#58a6ff"/>
+
+  <!-- ══════════════════════════════════════════════════
+       RECEPTOR BOXES
+       ══════════════════════════════════════════════════ -->
+
+  <!-- BOX 7: DECAPSULATE -->
+  <rect x="750" y="252" width="220" height="100" rx="8" fill="#161b22" stroke="#8957e5" stroke-width="1.5"/>
+  <text x="860" y="272" text-anchor="middle" fill="#bc8cff" font-size="10" font-weight="700">⑦ DECAPSULATE</text>
+  <text x="860" y="290" text-anchor="middle" fill="#8b949e" font-size="10">ECDH(privEc, ecEphPub)</text>
+  <text x="860" y="306" text-anchor="middle" fill="#8b949e" font-size="10">Kyber.decapsulate(privKyber, CT)</text>
+  <text x="860" y="322" text-anchor="middle" fill="#8b949e" font-size="10">→ ecSecret + kyberSecret</text>
+  <text x="860" y="340" text-anchor="middle" fill="#e3b341" font-size="10" font-weight="600">HKDF → mesma sessionKey 🔑</text>
+  <line x1="860" y1="228" x2="860" y2="252" stroke="#8957e5" stroke-width="1.5"/>
+  <polygon points="855,250 860,260 865,250" fill="#8957e5"/>
+
+  <!-- BOX 8: VALIDATE + DECRYPT -->
+  <rect x="750" y="376" width="220" height="68" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="860" y="396" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="700">⑧ VALIDATE + DECRYPT</text>
+  <text x="860" y="414" text-anchor="middle" fill="#8b949e" font-size="10">verify(sig, ciphertext, metadata)</text>
+  <text x="860" y="432" text-anchor="middle" fill="#8b949e" font-size="10">AES-GCM.decrypt → userData ✓</text>
+  <line x1="860" y1="352" x2="860" y2="376" stroke="#3fb950" stroke-width="1.5"/>
+  <polygon points="855,374 860,384 865,374" fill="#3fb950"/>
+
+  <!-- ══════════════════════════════════════════════════
+       ENVELOPE
+       ══════════════════════════════════════════════════ -->
+
+  <rect x="30" y="468" width="940" height="128" rx="10" fill="#161b22" stroke="#d29922" stroke-width="2"/>
+  <text x="500" y="490" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="700">📦  SecureDataEnvelope</text>
+
+  <!-- 7 cells: x = 36 + i*(134+4), width=134, y=500, h=44 -->
+  <rect x="36"  y="500" width="130" height="44" rx="5" fill="#21262d" stroke="#30363d"/>
+  <text x="101" y="518" text-anchor="middle" fill="#8b949e" font-size="10">sealedPayload</text>
+  <text x="101" y="535" text-anchor="middle" fill="#ff7b72" font-size="10" font-weight="600">AES-256-GCM</text>
+
+  <rect x="170" y="500" width="130" height="44" rx="5" fill="#21262d" stroke="#30363d"/>
+  <text x="235" y="518" text-anchor="middle" fill="#8b949e" font-size="10">kemEncapsulation</text>
+  <text x="235" y="535" text-anchor="middle" fill="#bc8cff" font-size="10" font-weight="600">ecEphPub + kyberCT</text>
+
+  <rect x="304" y="500" width="130" height="44" rx="5" fill="#21262d" stroke="#30363d"/>
+  <text x="369" y="518" text-anchor="middle" fill="#8b949e" font-size="10">userSignature</text>
+  <text x="369" y="535" text-anchor="middle" fill="#58a6ff" font-size="10" font-weight="600">ECDSA / Dilithium3</text>
+
+  <rect x="438" y="500" width="130" height="44" rx="5" fill="#21262d" stroke="#30363d"/>
+  <text x="503" y="518" text-anchor="middle" fill="#8b949e" font-size="10">signerPublicKey</text>
+  <text x="503" y="535" text-anchor="middle" fill="#58a6ff" font-size="10" font-weight="600">X.509 Base64</text>
+
+  <rect x="572" y="500" width="130" height="44" rx="5" fill="#21262d" stroke="#30363d"/>
+  <text x="637" y="518" text-anchor="middle" fill="#8b949e" font-size="10">metadata</text>
+  <text x="637" y="535" text-anchor="middle" fill="#e3b341" font-size="10" font-weight="600">signed · v1.2</text>
+
+  <rect x="706" y="500" width="130" height="44" rx="5" fill="#21262d" stroke="#30363d"/>
+  <text x="771" y="518" text-anchor="middle" fill="#8b949e" font-size="10">identityFingerprint</text>
+  <text x="771" y="535" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="600">SHA-256 Base64</text>
+
+  <rect x="840" y="500" width="124" height="44" rx="5" fill="#21262d" stroke="#30363d"/>
+  <text x="902" y="518" text-anchor="middle" fill="#8b949e" font-size="10">deviceBinding</text>
+  <text x="902" y="535" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="600">hardware-backed</text>
+
+  <text x="500" y="584" text-anchor="middle" fill="#484f58" font-size="10">requestId · recipientId · createdAtEpochSeconds · selectedFields</text>
+
+  <!-- Arrows into envelope -->
+  <line x1="140" y1="436" x2="140" y2="468" stroke="#d29922" stroke-width="1.5"/>
+  <polygon points="135,466 140,476 145,466" fill="#d29922"/>
+
+  <line x1="500" y1="408" x2="500" y2="468" stroke="#d29922" stroke-width="1.5"/>
+  <polygon points="495,466 500,476 505,466" fill="#d29922"/>
+
+  <line x1="860" y1="444" x2="860" y2="468" stroke="#d29922" stroke-width="1.5"/>
+  <polygon points="855,466 860,476 865,466" fill="#d29922"/>
+
+  <!-- kemEncapsulation dashed line from envelope to BOX7 -->
+  <line x1="235" y1="500" x2="235" y2="464" stroke="#8957e5" stroke-width="1" stroke-dasharray="5,3"/>
+  <line x1="235" y1="464" x2="860" y2="360" stroke="#8957e5" stroke-width="1" stroke-dasharray="5,3"/>
+  <polygon points="855,355 862,362 866,352" fill="#8957e5"/>
+  <text x="548" y="456" text-anchor="middle" fill="#8957e5" font-size="10">kemEncapsulation → receptor</text>
+
+  <!-- ══════════════════════════════════════════════════
+       SECURITY BADGES
+       ══════════════════════════════════════════════════ -->
+
+  <rect x="30"  y="616" width="170" height="26" rx="6" fill="#21262d" stroke="#30363d"/>
+  <text x="115" y="633" text-anchor="middle" fill="#3fb950" font-size="10">✅ Anti-Replay Guard</text>
+
+  <rect x="208" y="616" width="190" height="26" rx="6" fill="#21262d" stroke="#30363d"/>
+  <text x="303" y="633" text-anchor="middle" fill="#bc8cff" font-size="10">🔮 Harvest Now Protected</text>
+
+  <rect x="406" y="616" width="188" height="26" rx="6" fill="#21262d" stroke="#30363d"/>
+  <text x="500" y="633" text-anchor="middle" fill="#e3b341" font-size="10">🧹 Memory Zeroization</text>
+
+  <rect x="602" y="616" width="186" height="26" rx="6" fill="#21262d" stroke="#30363d"/>
+  <text x="695" y="633" text-anchor="middle" fill="#58a6ff" font-size="10">📋 LGPD / GDPR Consent</text>
+
+  <rect x="796" y="616" width="174" height="26" rx="6" fill="#21262d" stroke="#30363d"/>
+  <text x="883" y="633" text-anchor="middle" fill="#ff7b72" font-size="10">🔒 AAD Context Binding</text>
+
+  <!-- NIST / REFS -->
+  <text x="500" y="666" text-anchor="middle" fill="#484f58" font-size="10">NIST FIPS 203 (ML-KEM) · FIPS 204 (ML-DSA) · RFC 5869 (HKDF) · SP 800-38D (AES-GCM) · BouncyCastle 1.77 · JDK 21</text>
+  <text x="500" y="684" text-anchor="middle" fill="#30363d" font-size="10">github.com/LuanGabrielMachado/shield-sdk · Apache 2.0</text>
+
+</svg>
