@@ -28,7 +28,7 @@ SDK Kotlin/JVM para compartilhamento seguro de dados com consentimento granular 
 
 ![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20JVM%20%7C%20Spring%20%7C%20Ktor-orange?style=for-the-badge&logo=android&logoColor=white)
 ![BouncyCastle](https://img.shields.io/badge/BouncyCastle-1.77-yellow?style=for-the-badge)
-![Audit](https://img.shields.io/badge/Security%20Audit-15%20fixes-success?style=for-the-badge&logo=checkmarx&logoColor=white)
+![Audit](https://img.shields.io/badge/Security%20Audit-30+%20fixes-success?style=for-the-badge&logo=checkmarx&logoColor=white)
 
 ---
 
