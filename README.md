@@ -30,6 +30,8 @@ SDK Kotlin/JVM para compartilhamento seguro de dados com consentimento granular 
 ![BouncyCastle](https://img.shields.io/badge/BouncyCastle-1.77-yellow?style=for-the-badge)
 ![Audit](https://img.shields.io/badge/Security%20Audit-30+%20fixes-success?style=for-the-badge&logo=checkmarx&logoColor=white)
 
+![Shield SDK Flow](Docs/shield-sdk-flow.svg)
+
 ---
 
 ## Por que o Shield SDK existe
