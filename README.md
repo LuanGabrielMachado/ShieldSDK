@@ -50,7 +50,7 @@ O Shield resolve os três problemas ao mesmo tempo:
 
 **Principais recursos implementados:**
 
-- crypto/HybridPqKemService.kt: Atualização do Kyber-1024 para o Kyber-1024, atualização das informações do HKDF da v1 para a v2, proteção aprimorada contra downgrade com mensagens de erro detalhadas
+- crypto/HybridPqKemService.kt: Atualização do Kyber-768 para o Kyber-1024, atualização das informações do HKDF da v1 para a v2, proteção aprimorada contra downgrade com mensagens de erro detalhadas
 - security/DilithiumSignatureService.kt: Atualizado de Dilithium5 para Dilithium5, atualizadas as especificações dos parâmetros e a documentação com novas tabelas de tamanho
 - config/SDKConfig.kt: Atualizados os algoritmos de assinatura suportados para incluir dilithium5 em vez de Dilithium3 no conjunto de validação
 - models/cipher/KemEncapsulation.kt: Alterado o kyberParameterSet padrão para kyber1024, atualizadas as mensagens de validação e os comentários de derivação do protocolo
