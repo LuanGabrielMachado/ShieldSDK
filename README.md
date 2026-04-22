@@ -52,13 +52,13 @@ O Shield resolve os três problemas ao mesmo tempo:
 
 - crypto/HybridPqKemService.kt: Atualização do Kyber-1024 para o Kyber-1024, atualização das informações do HKDF da v1 para a v2, proteção aprimorada contra downgrade com mensagens de erro detalhadas
 - security/DilithiumSignatureService.kt: Atualizado de Dilithium5 para Dilithium5, atualizadas as especificações dos parâmetros e a documentação com novas tabelas de tamanho
-- config/SDKConfig.kt: Atualizados os algoritmos de assinatura suportados para incluir dilithium5 em vez de Dilithium5 no conjunto de validação
+- config/SDKConfig.kt: Atualizados os algoritmos de assinatura suportados para incluir dilithium5 em vez de Dilithium3 no conjunto de validação
 - models/cipher/KemEncapsulation.kt: Alterado o kyberParameterSet padrão para kyber1024, atualizadas as mensagens de validação e os comentários de derivação do protocolo
 - models/key/HybridRecipientPublicKey.kt: Ajustado o intervalo de validação do tamanho da chave pública do Kyber de 800-2000 para 1400-2200 para suporte ao Kyber-1024
 - models/key/PQKeyDescriptor.kt: Atualizado o KDoc para refletir os parâmetros do Kyber-1024 (nível 5, ~AES-256) e o mapeamento de versão
 - protocols/EnvelopeBuilder.kt: Atualizada a versão do protocolo para 2.0 e o kemAlgorithm para ECDH-P256+Kyber1024-HKDF-SHA256 nos metadados
 - protocols/SnapshotFactory.kt: Atualizada a string kemAlgorithm para Kyber-1024 e ajustada a referência de versão do PQKeyDescriptor
-- sdk/ShieldSDK.kt: Atualizada a resolução do serviço de assinatura para usar dilithium5, atualizadas as referências da documentação de Kyber-1024 para Kyber-1024
+- sdk/ShieldSDK.kt: Atualizada a resolução do serviço de assinatura para usar dilithium5, atualizadas as referências da documentação de Kyber-768 para Kyber-1024
 - build.gradle.kts: Aumentada a versão do artefato de 1.0.0 para 2.0.0 para refletir alterações significativas
 
 **Esta atualização eleva a segurança do Shield SDK do Nível 3 do NIST (~AES-192) para o Nível 5 (~AES-256) por meio de algoritmos criptográficos pós-quânticos.** 
