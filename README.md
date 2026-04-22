@@ -11,10 +11,10 @@ SDK Kotlin/JVM para compartilhamento seguro de dados com consentimento granular 
 ![JDK](https://img.shields.io/badge/JDK-17+-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=for-the-badge)
 
-![Post-Quantum](https://img.shields.io/badge/Post--Quantum-Kyber--768-blueviolet?style=for-the-badge&logo=atom&logoColor=white)
-![Dilithium](https://img.shields.io/badge/Signature-Dilithium3-blueviolet?style=for-the-badge&logo=atom&logoColor=white)
+![Post-Quantum](https://img.shields.io/badge/Post--Quantum-Kyber--1024-blueviolet?style=for-the-badge&logo=atom&logoColor=white)
+![Dilithium](https://img.shields.io/badge/Signature-Dilithium5-blueviolet?style=for-the-badge&logo=atom&logoColor=white)
 ![NIST](https://img.shields.io/badge/NIST-FIPS%20203%20%7C%20204-003087?style=for-the-badge&logo=nist&logoColor=white)
-![KEM](https://img.shields.io/badge/KEM-ECDH--P256%20%2B%20Kyber--768-8A2BE2?style=for-the-badge)
+![KEM](https://img.shields.io/badge/KEM-ECDH--P256%20%2B%20Kyber--1024-8A2BE2?style=for-the-badge)
 
 ![AES](https://img.shields.io/badge/Cipher-AES--256--GCM-red?style=for-the-badge&logo=letsencrypt&logoColor=white)
 ![HKDF](https://img.shields.io/badge/KDF-HKDF--SHA256-red?style=for-the-badge)
@@ -46,31 +46,50 @@ O Shield resolve os três problemas ao mesmo tempo:
 
 ---
 
+**Atualização do Shield SDK para segurança pós-quântica de nível 5 do NIST (Kyber-1024/Dilithium5)**
+
+**Principais recursos implementados:**
+
+- crypto/HybridPqKemService.kt: Atualização do Kyber-1024 para o Kyber-1024, atualização das informações do HKDF da v1 para a v2, proteção aprimorada contra downgrade com mensagens de erro detalhadas
+- security/DilithiumSignatureService.kt: Atualizado de Dilithium5 para Dilithium5, atualizadas as especificações dos parâmetros e a documentação com novas tabelas de tamanho
+- config/SDKConfig.kt: Atualizados os algoritmos de assinatura suportados para incluir dilithium5 em vez de Dilithium5 no conjunto de validação
+- models/cipher/KemEncapsulation.kt: Alterado o kyberParameterSet padrão para kyber1024, atualizadas as mensagens de validação e os comentários de derivação do protocolo
+- models/key/HybridRecipientPublicKey.kt: Ajustado o intervalo de validação do tamanho da chave pública do Kyber de 800-2000 para 1400-2200 para suporte ao Kyber-1024
+- models/key/PQKeyDescriptor.kt: Atualizado o KDoc para refletir os parâmetros do Kyber-1024 (nível 5, ~AES-256) e o mapeamento de versão
+- protocols/EnvelopeBuilder.kt: Atualizada a versão do protocolo para 2.0 e o kemAlgorithm para ECDH-P256+Kyber1024-HKDF-SHA256 nos metadados
+- protocols/SnapshotFactory.kt: Atualizada a string kemAlgorithm para Kyber-1024 e ajustada a referência de versão do PQKeyDescriptor
+- sdk/ShieldSDK.kt: Atualizada a resolução do serviço de assinatura para usar dilithium5, atualizadas as referências da documentação de Kyber-1024 para Kyber-1024
+- build.gradle.kts: Aumentada a versão do artefato de 1.0.0 para 2.0.0 para refletir alterações significativas
+
+**Esta atualização eleva a segurança do Shield SDK do Nível 3 do NIST (~AES-192) para o Nível 5 (~AES-256) por meio de algoritmos criptográficos pós-quânticos.** 
+
+---
+
 ## Segurança
 
 ### Protocolo híbrido pós-quântico
 
 O Shield usa um protocolo de duas camadas que resiste tanto a adversários clássicos quanto a futuros computadores quânticos.
 
-**Camada de transporte da chave — ECDH-P256 + Kyber-768 → HKDF-SHA256:**
+**Camada de transporte da chave — ECDH-P256 + Kyber-1024 → HKDF-SHA256:**
 
 ```
 ecSecret    = ECDH(ephemeral_P256_priv, receptor_ec_pub)     → 32 bytes
-kyberSecret = Kyber768.encapsulate(receptor_kyber_pub)       → 32 bytes
+kyberSecret = Kyber1024.encapsulate(receptor_kyber_pub)       → 32 bytes
 sessionKey  = HKDF-SHA256(ecSecret ‖ kyberSecret,
                            salt = requestId,
                            info = "shield-hybrid-pq-v1")     → 32 bytes
 ```
 
-A chave final é comprometida somente se **ambos** os algoritmos forem quebrados simultaneamente. ECDH-P256 é vulnerável ao algoritmo de Shor em computador quântico. Kyber-768 (NIST FIPS 203 / ML-KEM-768) não é. A combinação garante proteção contra *harvest now, decrypt later* — onde um adversário captura dados hoje para decriptar quando tiver capacidade quântica.
+A chave final é comprometida somente se **ambos** os algoritmos forem quebrados simultaneamente. ECDH-P256 é vulnerável ao algoritmo de Shor em computador quântico. Kyber-1024 (NIST FIPS 203 / ML-KEM-1024) não é. A combinação garante proteção contra *harvest now, decrypt later* — onde um adversário captura dados hoje para decriptar quando tiver capacidade quântica.
 
 **Camada de payload — AES-256-GCM ou ChaCha20-Poly1305:**
 
 O payload é encriptado com a `sessionKey`. O AAD `requestId|recipientId` é passado para `Cipher.updateAAD()` — o GCM autentica o contexto junto com o ciphertext. Mover o ciphertext para outro envelope ou alterar o `recipientId` invalida a tag.
 
-**Assinatura — ECDSA SHA256withECDSA (ou Dilithium3):**
+**Assinatura — ECDSA SHA256withECDSA (ou Dilithium5):**
 
-Ciphertext + metadata sorted canonicamente é assinado com ECDSA. A chave pública do assinante viaja no envelope — verificação funciona offline, sem estado, em qualquer sessão. Dilithium3 (NIST FIPS 204 / ML-DSA-65) está disponível como alternativa totalmente pós-quântica para a assinatura.
+Ciphertext + metadata sorted canonicamente é assinado com ECDSA. A chave pública do assinante viaja no envelope — verificação funciona offline, sem estado, em qualquer sessão. Dilithium5 (NIST FIPS 204 / ML-DSA-65) está disponível como alternativa totalmente pós-quântica para a assinatura.
 
 ### Garantias do envelope
 
@@ -82,8 +101,8 @@ Ciphertext + metadata sorted canonicamente é assinado com ECDSA. A chave públi
 | **Autenticidade** | ECDSA sobre ciphertext + metadata | Forja de envelope |
 | **Integridade do metadata** | Assinatura cobre metadata sorted | Adulteração de `expiresAt`, `legalBasis` |
 | **Anti-replay** | `ReplayGuard` com janela de 1h | Reenvio do mesmo envelope |
-| **Resistência quântica (KEM)** | Kyber-768 + ECDH-P256 via HKDF | Adversário com computador quântico |
-| **Resistência quântica (assinatura)** | Dilithium3 (opcional) | Forja via algoritmo de Shor |
+| **Resistência quântica (KEM)** | Kyber-1024 + ECDH-P256 via HKDF | Adversário com computador quântico |
+| **Resistência quântica (assinatura)** | Dilithium5 (opcional) | Forja via algoritmo de Shor |
 
 ### O que um atacante encontra
 
@@ -137,8 +156,8 @@ SecureDataEnvelope
 │
 ├── kemEncapsulation               Materiais públicos do KEM — modo PQ
 │   ├── ecEphemeralPublicKeyBytes  Chave pública EC efêmera P-256 (X.509 DER)
-│   ├── kyberCiphertextBytes       Ciphertext Kyber-768 (1088 bytes)
-│   └── kyberParameterSet          "kyber768"
+│   ├── kyberCiphertextBytes       Ciphertext Kyber-1024 (1088 bytes)
+│   └── kyberParameterSet          "kyber1024"
 │
 └── metadata                       Público, auditável e assinado
     ├── consentPurpose
@@ -147,7 +166,7 @@ SecureDataEnvelope
     ├── protocolVersion            "1.1"
     ├── encryptionAlgorithm        "AES-256-GCM" ou "ChaCha20-Poly1305"
     ├── signatureAlgorithm         "SHA256withECDSA"
-    └── kemAlgorithm               "ECDH-P256+Kyber768-HKDF-SHA256"
+    └── kemAlgorithm               "ECDH-P256+Kyber1024-HKDF-SHA256"
 ```
 
 Nenhum dado do usuário aparece fora de `sealedPayload.payload.ciphertext`. O `metadata` é público, auditável e assinado — qualquer adulteração invalida o ECDSA.
@@ -364,7 +383,7 @@ fun Application.module() {
 | Componente | Função |
 |---|---|
 | `SigningKeyRotationManager` | Rotação atômica de par ECDSA com janela de transição configurável |
-| `DilithiumSignatureService` | Assinatura Dilithium3 (NIST FIPS 204) — fecha o ponto ECDSA vulnerável ao Shor |
+| `DilithiumSignatureService` | Assinatura Dilithium5 (NIST FIPS 204) — fecha o ponto ECDSA vulnerável ao Shor |
 | `EmissionRateLimiter` | Janela deslizante por identidade — bloqueia emissão em loop |
 | `KeyAttestationHelper` | Android Key Attestation — prova de hardware binding via TEE/StrongBox |
 
@@ -397,7 +416,7 @@ logger.events.forEach { println("${it.type} | req=${it.requestId.take(8)} | ${it
 
 | Requisito | Como o Shield atende |
 |---|---|
-| LGPD Art. 46 — medidas de segurança | AES-256-GCM + Kyber-768, acima dos mínimos |
+| LGPD Art. 46 — medidas de segurança | AES-256-GCM + Kyber-1024, acima dos mínimos |
 | LGPD Art. 7 — consentimento | `ShareSelection` com campos, propósito, base legal e expiração |
 | GDPR Art. 32 — segurança do tratamento | Criptografia forte, minimização, auditoria |
 | GDPR Art. 17 — direito ao esquecimento | Expiração configrável por envelope |
