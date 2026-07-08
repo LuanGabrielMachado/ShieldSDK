@@ -346,7 +346,7 @@ Em escala nacional, cada dispositivo pode operar como nó de uma rede overlay on
 
 Copyright © 2026 Luan Gabriel Machado
 
-Licenciado sob ** GPL-3.0 license**
+Licenciado sob **GPL-3.0 license**
 
 ---
 
